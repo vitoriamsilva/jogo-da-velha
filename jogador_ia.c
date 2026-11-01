@@ -4,7 +4,6 @@
 static const int CANTOS[4][2]  = {{0, 0}, {0, 2}, {2, 0}, {2, 2}};
 static const int OPOSTOS[4][2] = {{2, 2}, {2, 0}, {0, 2}, {0, 0}};
 
-/* Conta quantas jogadas ganhadoras o jogador teria no tabuleiro atual */
 static int contaVitorias(int m[3][3], int jogador) {
     int i, j;
     int total = 0;
@@ -25,7 +24,6 @@ static int contaVitorias(int m[3][3], int jogador) {
     return total;
 }
 
-/* R1 (parte 1): se a IA tem duas em sequencia, marca a casa que falta */
 static int ganhaJogo(int m[3][3], int jogador) {
     int i, j;
 
@@ -45,7 +43,6 @@ static int ganhaJogo(int m[3][3], int jogador) {
     return 0;
 }
 
-/* R1 (parte 2): se o oponente tem duas em sequencia, marca a casa que falta */
 static int bloqueiaOponente(int m[3][3], int jogador, int outro) {
     int i, j;
 
@@ -67,7 +64,6 @@ static int bloqueiaOponente(int m[3][3], int jogador, int outro) {
     return 0;
 }
 
-/* R2: se uma jogada cria duas sequencias de duas marcacoes, usa-a */
 static int criaGarfo(int m[3][3], int jogador) {
     int i, j;
     int possibilidades;
@@ -90,7 +86,6 @@ static int criaGarfo(int m[3][3], int jogador) {
     return 0;
 }
 
-/* R3: se o centro esta livre, marca-o */
 static int jogaCentro(int m[3][3], int jogador) {
     if (m[1][1] == 0) {
         m[1][1] = jogador;
@@ -100,7 +95,6 @@ static int jogaCentro(int m[3][3], int jogador) {
     return 0;
 }
 
-/* R4: se o oponente marcou um canto, marca o canto oposto */
 static int jogaCantoOposto(int m[3][3], int jogador, int outro) {
     int i;
     int linha, coluna;
@@ -121,7 +115,6 @@ static int jogaCantoOposto(int m[3][3], int jogador, int outro) {
     return 0;
 }
 
-/* R5: se ha um canto vazio, marca-o */
 static int jogaCantoVazio(int m[3][3], int jogador) {
     int i;
     int linha, coluna;
@@ -139,7 +132,6 @@ static int jogaCantoVazio(int m[3][3], int jogador) {
     return 0;
 }
 
-/* R6: marca qualquer casa vazia */
 static int jogaQualquer(int m[3][3], int jogador) {
     int i, j;
 
@@ -163,7 +155,6 @@ void jogaIA(int m[3][3], int jogador) {
     else
         outro = 1;
 
-    /* As regras sao testadas na ordem; a primeira que jogar encerra a vez */
     if (ganhaJogo(m, jogador))
         return;
     if (bloqueiaOponente(m, jogador, outro))
