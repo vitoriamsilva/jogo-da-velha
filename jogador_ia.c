@@ -1,7 +1,11 @@
 #include "jogador_ia.h"
 #include "tabuleiro.h"
 
-int contaVitorias(int m[3][3], int jogador) {
+static const int CANTOS[4][2]  = {{0, 0}, {0, 2}, {2, 0}, {2, 2}};
+static const int OPOSTOS[4][2] = {{2, 2}, {2, 0}, {0, 2}, {0, 0}};
+
+/* Conta quantas jogadas ganhadoras o jogador teria no tabuleiro atual */
+static int contaVitorias(int m[3][3], int jogador) {
     int i, j;
     int total = 0;
 
@@ -21,17 +25,9 @@ int contaVitorias(int m[3][3], int jogador) {
     return total;
 }
 
-void jogaIA(int m[3][3], int jogador) {
-    int i, j, outro;
-    int linha, coluna;
-    int possibilidades;
-    int cantos[4][2] = {{0, 0}, {0, 2}, {2, 0}, {2, 2}};
-    int opostos[4][2] = {{2, 2}, {2, 0}, {0, 2}, {0, 0}};
-
-    if (jogador == 1)
-        outro = 4;
-    else
-        outro = 1;
+/* R1 (parte 1): se a IA tem duas em sequencia, marca a casa que falta */
+static int ganhaJogo(int m[3][3], int jogador) {
+    int i, j;
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
@@ -39,12 +35,19 @@ void jogaIA(int m[3][3], int jogador) {
                 m[i][j] = jogador;
 
                 if (temVencedor(m) == jogador * 3)
-                    return;
+                    return 1;
 
                 m[i][j] = 0;
             }
         }
     }
+
+    return 0;
+}
+
+/* R1 (parte 2): se o oponente tem duas em sequencia, marca a casa que falta */
+static int bloqueiaOponente(int m[3][3], int jogador, int outro) {
+    int i, j;
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
@@ -53,13 +56,21 @@ void jogaIA(int m[3][3], int jogador) {
 
                 if (temVencedor(m) == outro * 3) {
                     m[i][j] = jogador;
-                    return;
+                    return 1;
                 }
 
                 m[i][j] = 0;
             }
         }
     }
+
+    return 0;
+}
+
+/* R2: se uma jogada cria duas sequencias de duas marcacoes, usa-a */
+static int criaGarfo(int m[3][3], int jogador) {
+    int i, j;
+    int possibilidades;
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
@@ -70,44 +81,101 @@ void jogaIA(int m[3][3], int jogador) {
 
                 if (possibilidades >= 2) {
                     m[i][j] = jogador;
-                    return;
+                    return 1;
                 }
             }
         }
     }
 
+    return 0;
+}
+
+/* R3: se o centro esta livre, marca-o */
+static int jogaCentro(int m[3][3], int jogador) {
     if (m[1][1] == 0) {
         m[1][1] = jogador;
-        return;
+        return 1;
     }
 
-    for (i = 0; i < 4; i++) {
-        linha = cantos[i][0];
-        coluna = cantos[i][1];
+    return 0;
+}
 
-        if (m[linha][coluna] == outro &&
-            m[opostos[i][0]][opostos[i][1]] == 0) {
-            m[opostos[i][0]][opostos[i][1]] = jogador;
-            return;
+/* R4: se o oponente marcou um canto, marca o canto oposto */
+static int jogaCantoOposto(int m[3][3], int jogador, int outro) {
+    int i;
+    int linha, coluna;
+    int linhaOposta, colunaOposta;
+
+    for (i = 0; i < 4; i++) {
+        linha = CANTOS[i][0];
+        coluna = CANTOS[i][1];
+        linhaOposta = OPOSTOS[i][0];
+        colunaOposta = OPOSTOS[i][1];
+
+        if (m[linha][coluna] == outro && m[linhaOposta][colunaOposta] == 0) {
+            m[linhaOposta][colunaOposta] = jogador;
+            return 1;
         }
     }
 
+    return 0;
+}
+
+/* R5: se ha um canto vazio, marca-o */
+static int jogaCantoVazio(int m[3][3], int jogador) {
+    int i;
+    int linha, coluna;
+
     for (i = 0; i < 4; i++) {
-        linha = cantos[i][0];
-        coluna = cantos[i][1];
+        linha = CANTOS[i][0];
+        coluna = CANTOS[i][1];
 
         if (m[linha][coluna] == 0) {
             m[linha][coluna] = jogador;
-            return;
+            return 1;
         }
     }
+
+    return 0;
+}
+
+/* R6: marca qualquer casa vazia */
+static int jogaQualquer(int m[3][3], int jogador) {
+    int i, j;
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
             if (m[i][j] == 0) {
                 m[i][j] = jogador;
-                return;
+                return 1;
             }
         }
     }
+
+    return 0;
+}
+
+void jogaIA(int m[3][3], int jogador) {
+    int outro;
+
+    if (jogador == 1)
+        outro = 4;
+    else
+        outro = 1;
+
+    /* As regras sao testadas na ordem; a primeira que jogar encerra a vez */
+    if (ganhaJogo(m, jogador))
+        return;
+    if (bloqueiaOponente(m, jogador, outro))
+        return;
+    if (criaGarfo(m, jogador))
+        return;
+    if (jogaCentro(m, jogador))
+        return;
+    if (jogaCantoOposto(m, jogador, outro))
+        return;
+    if (jogaCantoVazio(m, jogador))
+        return;
+
+    jogaQualquer(m, jogador);
 }
