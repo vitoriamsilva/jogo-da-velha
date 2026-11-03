@@ -24,35 +24,16 @@ static int contaVitorias(int m[3][3], int jogador) {
     return total;
 }
 
-static int ganhaJogo(int m[3][3], int jogador) {
+static int fechaLinha(int m[3][3], int testa, int marca) {
     int i, j;
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
             if (m[i][j] == 0) {
-                m[i][j] = jogador;
+                m[i][j] = testa;
 
-                if (temVencedor(m) == jogador * 3)
-                    return 1;
-
-                m[i][j] = 0;
-            }
-        }
-    }
-
-    return 0;
-}
-
-static int bloqueiaOponente(int m[3][3], int jogador, int outro) {
-    int i, j;
-
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
-            if (m[i][j] == 0) {
-                m[i][j] = outro;
-
-                if (temVencedor(m) == outro * 3) {
-                    m[i][j] = jogador;
+                if (temVencedor(m) == testa * 3) {
+                    m[i][j] = marca;
                     return 1;
                 }
 
@@ -66,19 +47,16 @@ static int bloqueiaOponente(int m[3][3], int jogador, int outro) {
 
 static int criaGarfo(int m[3][3], int jogador) {
     int i, j;
-    int possibilidades;
 
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
             if (m[i][j] == 0) {
                 m[i][j] = jogador;
-                possibilidades = contaVitorias(m, jogador);
-                m[i][j] = 0;
 
-                if (possibilidades >= 2) {
-                    m[i][j] = jogador;
+                if (contaVitorias(m, jogador) >= 2)
                     return 1;
-                }
+
+                m[i][j] = 0;
             }
         }
     }
@@ -155,9 +133,9 @@ void jogaIA(int m[3][3], int jogador) {
     else
         outro = JOGADOR_O;
 
-    if (ganhaJogo(m, jogador))
+    if (fechaLinha(m, jogador, jogador))
         return;
-    if (bloqueiaOponente(m, jogador, outro))
+    if (fechaLinha(m, outro, jogador))
         return;
     if (criaGarfo(m, jogador))
         return;
