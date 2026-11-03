@@ -6,6 +6,7 @@
 int main(void) {
     WSADATA dados;
     SOCKET conexao;
+    int porta;
 
     if (WSAStartup(MAKEWORD(2, 2), &dados) != 0) {
         printf("Erro ao iniciar Winsock!\n");
@@ -13,9 +14,12 @@ int main(void) {
     }
 
     printf("=== JOGO DA VELHA REMOTO ===\n");
-    printf("Voce sera o jogador X.\n");
+    printf("Voce sera o jogador X.\n\n");
 
-    conexao = iniciaServidor(8080);
+    printf("Porta para aguardar conexao (ex: 8080): ");
+    scanf("%d", &porta);
+
+    conexao = iniciaServidor(porta);
 
     if (conexao == INVALID_SOCKET) {
         WSACleanup();

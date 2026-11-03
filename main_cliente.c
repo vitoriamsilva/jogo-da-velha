@@ -3,11 +3,11 @@
 #include "partida_remota.h"
 #include "jogador_remoto.h"
 
-#define IP_SERVIDOR "127.0.0.1"
-
 int main(void) {
     WSADATA dados;
     SOCKET conexao;
+    char ip[20];
+    int porta;
 
     if (WSAStartup(MAKEWORD(2, 2), &dados) != 0) {
         printf("Erro ao iniciar Winsock!\n");
@@ -15,9 +15,15 @@ int main(void) {
     }
 
     printf("=== JOGO DA VELHA REMOTO ===\n");
-    printf("Voce sera o jogador O.\n");
+    printf("Voce sera o jogador O.\n\n");
 
-    conexao = conectaServidor(IP_SERVIDOR, 8080);
+    printf("IP do servidor (127.0.0.1 se for neste computador): ");
+    scanf("%19s", ip);
+
+    printf("Porta (a mesma do servidor): ");
+    scanf("%d", &porta);
+
+    conexao = conectaServidor(ip, porta);
 
     if (conexao == INVALID_SOCKET) {
         WSACleanup();
