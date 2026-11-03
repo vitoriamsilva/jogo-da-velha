@@ -22,9 +22,9 @@ void desenha(int m[3][3]) {
         printf(" %d ", i + 1);
 
         for (j = 0; j < 3; j++) {
-            if (m[i][j] == 1)
+            if (m[i][j] == JOGADOR_O)
                 printf(" O ");
-            else if (m[i][j] == 4)
+            else if (m[i][j] == JOGADOR_X)
                 printf(" X ");
             else
                 printf("   ");
@@ -45,20 +45,20 @@ int temVencedor(int m[3][3]) {
 
     for (i = 0; i < 3; i++) {
         soma = m[i][0] + m[i][1] + m[i][2];
-        if (soma == 3 || soma == 12)
+        if (soma == VENCEU_O || soma == VENCEU_X)
             return soma;
 
         soma = m[0][i] + m[1][i] + m[2][i];
-        if (soma == 3 || soma == 12)
+        if (soma == VENCEU_O || soma == VENCEU_X)
             return soma;
     }
 
     soma = m[0][0] + m[1][1] + m[2][2];
-    if (soma == 3 || soma == 12)
+    if (soma == VENCEU_O || soma == VENCEU_X)
         return soma;
 
     soma = m[0][2] + m[1][1] + m[2][0];
-    if (soma == 3 || soma == 12)
+    if (soma == VENCEU_O || soma == VENCEU_X)
         return soma;
 
     return 0;

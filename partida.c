@@ -6,7 +6,7 @@
 
 void partidaHumanoHumano(void) {
     int m[3][3];
-    int jogador = 1;
+    int jogador = JOGADOR_O;
     int jogadas = 0;
     int vencedor = 0;
 
@@ -19,17 +19,17 @@ void partidaHumanoHumano(void) {
 
         vencedor = temVencedor(m);
 
-        if (jogador == 1)
-            jogador = 4;
+        if (jogador == JOGADOR_O)
+            jogador = JOGADOR_X;
         else
-            jogador = 1;
+            jogador = JOGADOR_O;
     }
 
     desenha(m);
 
-    if (vencedor == 3)
+    if (vencedor == VENCEU_O)
         printf("O jogador O venceu!\n");
-    else if (vencedor == 12)
+    else if (vencedor == VENCEU_X)
         printf("O jogador X venceu!\n");
     else
         printf("Deu empate!\n");
@@ -44,13 +44,13 @@ void partidaHumanoIA(void) {
 
     while (jogadas < 9 && vencedor == 0) {
         desenha(m);
-        jogaTeclado(m, 1);
+        jogaTeclado(m, JOGADOR_O);
         jogadas++;
 
         vencedor = temVencedor(m);
 
         if (vencedor == 0 && jogadas < 9) {
-            jogaIA(m, 4);
+            jogaIA(m, JOGADOR_X);
             jogadas++;
 
             vencedor = temVencedor(m);
@@ -59,9 +59,9 @@ void partidaHumanoIA(void) {
 
     desenha(m);
 
-    if (vencedor == 3)
+    if (vencedor == VENCEU_O)
         printf("O jogador venceu!\n");
-    else if (vencedor == 12)
+    else if (vencedor == VENCEU_X)
         printf("A IA venceu!\n");
     else
         printf("Deu empate!\n");

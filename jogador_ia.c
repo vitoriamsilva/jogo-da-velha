@@ -150,10 +150,10 @@ static int jogaQualquer(int m[3][3], int jogador) {
 void jogaIA(int m[3][3], int jogador) {
     int outro;
 
-    if (jogador == 1)
-        outro = 4;
+    if (jogador == JOGADOR_O)
+        outro = JOGADOR_X;
     else
-        outro = 1;
+        outro = JOGADOR_O;
 
     if (ganhaJogo(m, jogador))
         return;

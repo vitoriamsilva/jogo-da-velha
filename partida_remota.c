@@ -15,7 +15,7 @@ void partidaServidor(SOCKET conexao) {
     while (jogadas < 9 && status == 0) {
         desenha(m);
 
-        jogaTecladoRemoto(m, 4, &linha, &coluna);
+        jogaTecladoRemoto(m, JOGADOR_X, &linha, &coluna);
         jogadas++;
 
         status = temVencedor(m);
@@ -40,7 +40,7 @@ void partidaServidor(SOCKET conexao) {
             return;
         }
 
-        if (marcaJogada(m, linha, coluna, 1) == 0) {
+        if (marcaJogada(m, linha, coluna, JOGADOR_O) == 0) {
             printf("Jogada recebida invalida!\n");
             return;
         }
@@ -49,9 +49,9 @@ void partidaServidor(SOCKET conexao) {
         desenha(m);
     }
 
-    if (status == 12)
+    if (status == VENCEU_X)
         printf("O jogador X venceu!\n");
-    else if (status == 3)
+    else if (status == VENCEU_O)
         printf("O jogador O venceu!\n");
     else
         printf("Deu empate!\n");
@@ -73,7 +73,7 @@ void partidaCliente(SOCKET conexao) {
             return;
         }
 
-        if (marcaJogada(m, linha, coluna, 4) == 0) {
+        if (marcaJogada(m, linha, coluna, JOGADOR_X) == 0) {
             printf("Jogada recebida invalida!\n");
             return;
         }
@@ -84,7 +84,7 @@ void partidaCliente(SOCKET conexao) {
         if (status != 0)
             break;
 
-        jogaTecladoRemoto(m, 1, &linha, &coluna);
+        jogaTecladoRemoto(m, JOGADOR_O, &linha, &coluna);
         jogadas++;
 
         status = temVencedor(m);
@@ -100,9 +100,9 @@ void partidaCliente(SOCKET conexao) {
         desenha(m);
     }
 
-    if (status == 12)
+    if (status == VENCEU_X)
         printf("O jogador X venceu!\n");
-    else if (status == 3)
+    else if (status == VENCEU_O)
         printf("O jogador O venceu!\n");
     else
         printf("Deu empate!\n");

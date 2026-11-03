@@ -7,7 +7,7 @@ void jogaTeclado(int m[3][3], int jogador) {
     int marcou = 0;
 
     while (marcou == 0) {
-        if (jogador == 1)
+        if (jogador == JOGADOR_O)
             printf("Jogador O\n");
         else
             printf("Jogador X\n");
@@ -32,7 +32,7 @@ void jogaTecladoRemoto(int m[3][3], int jogador, int *linha, int *coluna) {
     int marcou = 0;
 
     while (marcou == 0) {
-        if (jogador == 1)
+        if (jogador == JOGADOR_O)
             printf("Jogador O\n");
         else
             printf("Jogador X\n");
