@@ -76,9 +76,9 @@ int marcaJogada(int m[3][3], int linha, int coluna, int jogador) {
 }
 
 void mostraResultado(int status) {
-    if (status == 3)
+    if (status == VENCEU_O)
         printf("O jogador O venceu!\n");
-    else if (status == 12)
+    else if (status == VENCEU_X)
         printf("O jogador X venceu!\n");
     else
         printf("Deu empate!\n");
