@@ -6,6 +6,7 @@
 
 void partidaHumanoHumano(void) {
     int m[3][3];
+    int linha, coluna;
     int jogador = JOGADOR_O;
     int jogadas = 0;
     int vencedor = 0;
@@ -14,7 +15,7 @@ void partidaHumanoHumano(void) {
 
     while (jogadas < 9 && vencedor == 0) {
         desenha(m);
-        jogaTeclado(m, jogador);
+        jogaTeclado(m, jogador, &linha, &coluna);
         jogadas++;
 
         vencedor = temVencedor(m);
@@ -37,6 +38,7 @@ void partidaHumanoHumano(void) {
 
 void partidaHumanoIA(void) {
     int m[3][3];
+    int linha, coluna;
     int jogadas = 0;
     int vencedor = 0;
 
@@ -44,7 +46,7 @@ void partidaHumanoIA(void) {
 
     while (jogadas < 9 && vencedor == 0) {
         desenha(m);
-        jogaTeclado(m, JOGADOR_O);
+        jogaTeclado(m, JOGADOR_O, &linha, &coluna);
         jogadas++;
 
         vencedor = temVencedor(m);

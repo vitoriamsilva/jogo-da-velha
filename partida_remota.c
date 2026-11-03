@@ -15,7 +15,7 @@ void partidaServidor(SOCKET conexao) {
     while (jogadas < 9 && status == 0) {
         desenha(m);
 
-        jogaTecladoRemoto(m, JOGADOR_X, &linha, &coluna);
+        jogaTeclado(m, JOGADOR_X, &linha, &coluna);
         jogadas++;
 
         status = temVencedor(m);
@@ -84,7 +84,7 @@ void partidaCliente(SOCKET conexao) {
         if (status != 0)
             break;
 
-        jogaTecladoRemoto(m, JOGADOR_O, &linha, &coluna);
+        jogaTeclado(m, JOGADOR_O, &linha, &coluna);
         jogadas++;
 
         status = temVencedor(m);
