@@ -1,7 +1,7 @@
 # Jogo da Velha em C
 
 Trabalho de Programação Estruturada.
-Autores: NOME 1 e NOME 2
+Autores: Vitória Maria e Gustavo Borges
 
 O jogo tem tres modos: humano x humano, humano x IA e jogador remoto (servidor e cliente).
 
