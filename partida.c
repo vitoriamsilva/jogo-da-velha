@@ -28,12 +28,7 @@ void partidaHumanoHumano(void) {
 
     desenha(m);
 
-    if (vencedor == VENCEU_O)
-        printf("O jogador O venceu!\n");
-    else if (vencedor == VENCEU_X)
-        printf("O jogador X venceu!\n");
-    else
-        printf("Deu empate!\n");
+    mostraResultado(vencedor);
 }
 
 void partidaHumanoIA(void) {

@@ -100,10 +100,6 @@ void partidaCliente(SOCKET conexao) {
         desenha(m);
     }
 
-    if (status == VENCEU_X)
-        printf("O jogador X venceu!\n");
-    else if (status == VENCEU_O)
-        printf("O jogador O venceu!\n");
-    else
-        printf("Deu empate!\n");
+    mostraResultado(status);
+
 }

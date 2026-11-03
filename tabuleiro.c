@@ -74,3 +74,12 @@ int marcaJogada(int m[3][3], int linha, int coluna, int jogador) {
     m[linha - 1][coluna - 1] = jogador;
     return 1;
 }
+
+void mostraResultado(int status) {
+    if (status == 3)
+        printf("O jogador O venceu!\n");
+    else if (status == 12)
+        printf("O jogador X venceu!\n");
+    else
+        printf("Deu empate!\n");
+}
